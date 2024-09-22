@@ -9,6 +9,7 @@ export default function HomePage() {
     navigate("/signup");
 
   };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
       <header className="container mx-auto px-4 py-6 flex justify-between items-center">
@@ -18,10 +19,10 @@ export default function HomePage() {
         </div>
         <nav>
           <ul className="flex space-x-4">
-            <li><a href="#" className="text-gray-300 hover:text-green-400">Home</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-green-400">Features</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-green-400">Pricing</a></li>
-            <li><a href="#" className="text-gray-300 hover:text-green-400">Contact</a></li>
+            <li><a href="/" className="text-gray-300 hover:text-green-400">Home</a></li>
+            <li><a href="/signup" className="text-gray-300 hover:text-green-400">signup</a></li>
+            <li><a href="/signin" className="text-gray-300 hover:text-green-400">signin</a></li>
+           
           </ul>
         </nav>
       </header>
