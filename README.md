@@ -18,5 +18,4 @@ GET /api/v1/blog/bulk
 ## Database URL
 ```
 DATABASE_URL=""
-
 ```
