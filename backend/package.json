@@ -9,7 +9,7 @@
     "@prisma/extension-accelerate": "^1.1.0",
     "@tanujch/insightsprouts": "^1.0.0",
     "hono": "^4.5.6",
-    "prisma": "^5.18.0"
+    "prisma": "^5.19.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",
