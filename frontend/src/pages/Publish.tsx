@@ -1,54 +1,97 @@
-import { Appbar } from "../components/Appbar"
+import React, { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { useNavigate } from "react-router-dom";
-import { ChangeEvent, useState } from "react";
+import { Appbar } from "../components/Appbar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Lightbulb } from "lucide-react";
 
-export const Publish = () => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const navigate = useNavigate();
+export const Publish: React.FC = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
 
-    return <div>
-        <Appbar />
-        <div className="flex justify-center w-full pt-8"> 
-            <div className="max-w-screen-lg w-full">
-                <input onChange={(e) => {
-                    setTitle(e.target.value)
-                }} type="text" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Title" />
+  const handlePublish = async () => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/blog`,
+        {
+          title,
+          content: description,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      navigate(`/blog/${response.data.id}`);
+    } catch (error) {
+      console.error("Error publishing post:", error);
+      // Add error handling here if needed
+    }
+  };
 
-                <TextEditor onChange={(e) => {
-                    setDescription(e.target.value)
-                }} />
-                <button onClick={async () => {
-                    const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, {
-                        title,
-                        content: description
-                    }, {
-                        headers: {
-                            Authorization: localStorage.getItem("token")
-                        }
-                    });
-                    navigate(`/blog/${response.data.id}`)
-                }} type="submit" className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                    Publish post
-                </button>
-            </div>
-        </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
+      <Appbar />
+      <div className="container mx-auto px-4 py-8">
+        <Card className="max-w-2xl mx-auto bg-gray-800 text-white shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-2xl font-bold text-green-400">
+              <Lightbulb className="h-6 w-6" />
+              Share Your Insight
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            
+            <Input
+              type="text"
+              placeholder="Title of your insight"
+              className="mb-4 bg-gray-700 text-white border border-gray-600 placeholder-gray-400"
+              value={title}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+            />
+            <TextEditor
+              value={description}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setDescription(e.target.value)
+              }
+            />
+            <Button
+              onClick={handlePublish}
+              className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              Publish Insight
+            </Button>
+            <Button
+              onClick={() => navigate(-1)} // Go back to the previous page
+              className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              Go Back
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
+  );
+};
+
+interface TextEditorProps {
+  value: string;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-
-function TextEditor({ onChange }: {onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void}) {
-    return <div className="mt-2">
-        <div className="w-full mb-4 ">
-            <div className="flex items-center justify-between border">
-            <div className="my-2 bg-white rounded-b-lg w-full">
-                <label className="sr-only">Publish post</label>
-                <textarea onChange={onChange} id="editor" rows={8} className="focus:outline-none block w-full px-0 text-sm text-gray-800 bg-white border-0 pl-2" placeholder="Write an article..." required />
-            </div>
-        </div>
-       </div>
-    </div>
-    
-}
+const TextEditor: React.FC<TextEditorProps> = ({ value, onChange }) => {
+  return (
+    <Textarea
+      placeholder="Write your insight here..."
+      className="min-h-[200px] resize-y bg-gray-700 text-white border border-gray-600 placeholder-gray-400"
+      value={value}
+      onChange={onChange}
+    />
+  );
+};
