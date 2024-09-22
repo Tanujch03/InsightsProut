@@ -1,6 +1,12 @@
 # InsightsProut
 Share insightful perspectives, useful knowledge 
 
+# Frontend
+
+```
+npm run dev
+```
+
 # Backend
 ## Routes
 ```
@@ -49,4 +55,24 @@ npm install @prisma/extension-accelerate
 ## Run Backend
 ```
 npm run dev
+```
+
+## Go to Postman
+```
+Test it: POST - http://127.0.0.1:8787/api/v1/user/signup
+
+{
+    "username":"tanujchaganti03@gmail.com",
+    "password":"123456789"
+}
+```
+
+## Login to wrangler
+```
+npx wrangler login
+```
+
+## Deploy to Cloudflare workers
+```
+npm run deploy
 ```
